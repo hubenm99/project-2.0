@@ -36,8 +36,7 @@ public class ChatFilter {
                         }
                         returnMessage += filter;
                     } else {
-                        filter = word in message;
-                        returnMessage += filter
+                        returnMessage += word in message;
                     }
                 filter = "";
                 }
