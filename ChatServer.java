@@ -28,11 +28,13 @@ final class ChatServer {
     private void start() {
         try {
             ServerSocket serverSocket = new ServerSocket(port);
-            Socket socket = serverSocket.accept();
-            Runnable r = new ClientThread(socket, uniqueId++);
-            Thread t = new Thread(r);
-            clients.add((ClientThread) r);
-            t.start();
+            while (true) {
+                Socket socket = serverSocket.accept();
+                Runnable r = new ClientThread(socket, uniqueId++);
+                Thread t = new Thread(r);
+                clients.add((ClientThread) r);
+                t.start();
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -122,18 +124,26 @@ final class ChatServer {
         @Override
         public void run() {
             // Read the username sent to you by client
-            try {
-            if (cm.getTypeOfMessage() == 1) {
-                socket.close();
-            } else {
 
+            try {
+//            if (cm.getTypeOfMessage() == 1) {
+//                socket.close();
+//            } else {
+                System.out.println(username + ": Ping");
+
+                try {
+                    sOutput.writeObject("Pong");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 while (true) {
-                    broadcast(username + ": " + cm.getMessage());
-//                    try {
-//                        cm = (ChatMessage) sInput.readObject();
-//                    } catch (IOException | ClassNotFoundException e) {
-//                        e.printStackTrace();
-//                    }
+
+                    try {
+                        cm = (ChatMessage) sInput.readObject();
+                        broadcast(username + ": " + cm.getMessage());
+                    } catch (IOException | ClassNotFoundException e) {
+                        e.printStackTrace();
+                    }
 //                    System.out.println(username + ": Ping");
 //
 //
@@ -144,9 +154,9 @@ final class ChatServer {
 //                        e.printStackTrace();
 //                    }
                 }
-            }
+            //}
 
-            } catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
