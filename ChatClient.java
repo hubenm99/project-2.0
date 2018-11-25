@@ -96,14 +96,14 @@ final class ChatClient {
         } else if (args.length == 5) {
             client = new ChatClient(args[4], Integer.parseInt(args[3]), args[2]);
         } else {
-            client = new ChatClient("localhost", 1500, "Ay yo something went wrong");
+            client = new ChatClient("localhost", 1500, "Anonymous");
         }
         // Create your client and start it
         client.start();
 
         // Send an empty message to the server
-        ObjectInputStream inputStream = client.sInput;
-        String input1 = inputStream.toString();
+        Scanner s = new Scanner(System.in);
+        String input1 = s.nextLine();
 
         if (input1.equals("/logout")) {
             try {
