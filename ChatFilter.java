@@ -11,49 +11,37 @@ public class ChatFilter {
     public String filter(String msg) {
         String returnMessage= "";
         File file;
-        File messageFile;
         FileReader fileReader;
-        FileReader messageFileReader;
         BufferedReader bufferedReader;
-        BufferedReader messageBufferedReader;
 
         try {
             String filter = "";
+            String returnMessage;
             // creates a buffered reader by for the bad words text file and message
             file = new File(badWordsFileName);
-            messageFile = new File(msg);
             fileReader = new FileReader(file);
-            messageFileReader = new FileReader(messageFile);
             bufferedReader = new BufferedReader(fileReader);
-            messageBufferedReader = new BufferedReader(messageFileReader);
 
             ArrayList<String> badWords = new ArrayList<>();
-            ArrayList<String> messageWords = new ArrayList<>();
 
             while (bufferedReader.readLine() != null) {
                 badWords.add(bufferedReader.readLine());
             }
 
-            while(messageBufferedReader.readLine() != null) {
-                messageWords.add(messageBufferedReader.readLine());
-            }
-
-            for (int i = 0; i < badWords.toArray().length; i++) {
-                for (int j = 0; j < messageWords.toArray().length; j++) {
-                    if (messageWords.get(j).equals(badWords.get(i))) {
-                        for (int k = 0; k < messageWords.get(j).length(); k++) {
+            for (int i = 0; i < msg.length; i++) {
+                for (int j = 0; j < number of words in message; j++) {
+                    if (word in message.equals(badWords.get(i))) {
+                        for (int k = 0; k <length of word in message; k++) {
                             filter += "*";
                         }
-                        messageWords.set(j, filter);
+                        returnMessage += filter;
+                    } else {
+                        filter = word in message;
+                        returnMessage += filter
                     }
+                filter = "";
                 }
 
-            }
-
-
-
-            for (int i = 0; i < messageWords.toArray().length; i++) {
-                returnMessage += messageWords.get(i);
             }
 
         } catch (Exception e) {
